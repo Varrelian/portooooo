@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portofolio — Birgita Grecia</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>My Portfolio</h1>
+    <nav>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section id="home" class="hero fade-in">
+  <div class="hero-container">
+    <img src="Tambahkan subjudul.png" alt="Foto Profil">
+    
+    <div class="hero-text">
+      <h2>Birgita Grecia Haryanto</h2> <br>
+      <p>Student of Plus Pelita Nusantara Vocational High School </p>
+    </div>
+  </div>
+</section>
+
+
+  <section id="about" class="about fade-in">
+    <h2>About Me</h2>
+    <p>hi, My name is Birgita Grecia Haryanto. I am a student of Pelita Nusantara Vocational High School. I am a Grade 11 student in Software Engineering with a strong interest in art and technology. I enjoy learning new things, especially in the fields of design, programming, and digital editing. I also have good communication skills and enjoy working in a team. </p>
+  </section>
+
+  <section id="skills" class="skills fade-in">
+    <h2>My Skills</h2>
+    <div class="skills-list">
+      <div class="skill">HTML</div>
+      <div class="skill">CSS</div>
+      <div class="skill">JavaScript</div>
+      <div class="skill">Canva</div>
+      <div class="skill">Figma</div>
+      <div class="skill">CapCut</div>
+      <div class="skill">PHP</div>
+      <div class="skill">Ms.Word</div>
+    </div>
+  </section>
+
+  <section id="projects" class="projects fade-in">
+  <h2>Projects</h2>
+  <div class="project-list">
+    <div class="project">
+      <img src="jam.png " alt="Jam Digital">
+      <div class="project-content">
+        <h3>Jam Digital</h3>
+        <p>Jam digital interaktif berbasis HTML, CSS</p>
+        <a href="https://gitttaaa.github.io/jam/" target="_blank">Lihat Project</a>
+      </div>
+    </div>
+
+    <div class="project">
+      <img src="todolist.png" alt="Jam Digital">
+      <div class="project-content">
+        <h3>To Do List</h3>
+        <p> To Do List untuk menulis kegiatan atau tugas</p>
+        <a href="https://gitttaaa.github.io/todoo/" target="_blank">Lihat Project</a>
+      </div>
+    </div>
+
+    <div class="project">
+      <img src="Screenshot 2025-09-25 104916.png" alt="Kartu Undangan">
+      <div class="project-content">
+        <h3>Undangan</h3>
+        <p>Undangan Ulang Tahun</p>
+        <a href="https://gitttaaa.github.io/Undangan/" target="_blank">Lihat Project</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+  <section id="contact" class="contact fade-in">
+    <h2>Contact</h2>
+    <p>✉️ Email: <a href="mailto:birgitagrecia1609@gmail.com">birgitagrecia1609@gmail.com</a></p>
+    <p>📞 Telp: <a href="https://wa.me/6287853206899">+62 812-3456-789</a></p>
+    <p>🐙 GitHub: <a href="https://github.com/gitttaaa" target="_blank">github.com/birgitagrecia</a></p>
+  </section>
+
+  <footer>
+    © 2025 Birgita Grecia Haryanto — SMK Plus Pelita Nusantara
+  </footer>
+
+  <script>
+    // Animasi fade-in saat scroll
+    const faders = document.querySelectorAll('.fade-in');
+    const appearOptions = { threshold: 0.2, rootMargin: "0px 0px -50px 0px" };
+    const appearOnScroll = new IntersectionObserver((entries, observer)=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          entry.target.classList.add('show');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, appearOptions);
+    faders.forEach(fader=>{ appearOnScroll.observe(fader) });
+  </script>
+</body>
+</html>
