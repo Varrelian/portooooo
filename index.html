@@ -5,6 +5,111 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Portofolio — Birgita Grecia</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    /* Tambahan CSS khusus untuk sertifikat - tanpa mengubah warna */
+    .sertifikat-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      margin-top: 30px;
+    }
+
+    .sertifikat-item {
+      background: #fff;
+      border-radius: 18px;
+      padding: 25px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+      transition: all 0.4s ease;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .sertifikat-item:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.12);
+    }
+
+    .sertifikat-preview {
+      width: 100%;
+      height: 200px;
+      background: #f8f0f4;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: 2px dashed #ffd6e9;
+      margin-bottom: 15px;
+      transition: all 0.3s ease;
+    }
+
+    .sertifikat-preview:hover {
+      border-color: var(--accent);
+      background: #fff6fb;
+    }
+
+    .sertifikat-preview .icon {
+      font-size: 50px;
+      margin-bottom: 8px;
+    }
+
+    .sertifikat-preview .label {
+      font-size: 14px;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .sertifikat-item .pdf-link {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 600;
+      padding: 10px 24px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      margin-top: 5px;
+      width: 100%;
+    }
+
+    .sertifikat-item .pdf-link:hover {
+      background: var(--accent-dark);
+      transform: scale(1.05);
+    }
+
+    .sertifikat-item .sertifikat-title {
+      font-size: 14px;
+      color: var(--muted);
+      margin-top: 12px;
+      font-weight: 500;
+    }
+
+    /* Jika ingin menampilkan gambar (konversi PDF ke PNG/JPG dulu) */
+    .sertifikat-item img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 2px solid #ffd6e9;
+      transition: all 0.3s ease;
+    }
+
+    .sertifikat-item img:hover {
+      border-color: var(--accent);
+      transform: scale(1.02);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .sertifikat-list {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+        margin: 30px auto 0;
+      }
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -15,26 +120,25 @@
         <li><a href="#about">About</a></li>
         <li><a href="#skills">Skills</a></li>
         <li><a href="#projects">Projects</a></li>
+        <li><a href="#sertifikat">Sertifikat</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
     </nav>
   </header>
 
   <section id="home" class="hero fade-in">
-  <div class="hero-container">
-    <img src="Tambahkan subjudul.png" alt="Foto Profil">
-    
-    <div class="hero-text">
-      <h2>Birgita Grecia Haryanto</h2> <br>
-      <p>Student of Plus Pelita Nusantara Vocational High School </p>
+    <div class="hero-container">
+      <img src="Tambahkan subjudul.png" alt="Foto Profil">
+      <div class="hero-text">
+        <h2>Birgita Grecia Haryanto</h2>
+        <p>Student of Plus Pelita Nusantara Vocational High School</p>
+      </div>
     </div>
-  </div>
-</section>
-
+  </section>
 
   <section id="about" class="about fade-in">
     <h2>About Me</h2>
-    <p>hi, My name is Birgita Grecia Haryanto. I am a student of Pelita Nusantara Vocational High School. I am a Grade 11 student in Software Engineering with a strong interest in art and technology. I enjoy learning new things, especially in the fields of design, programming, and digital editing. I also have good communication skills and enjoy working in a team. </p>
+    <p>Hi, My name is Birgita Grecia Haryanto. I am a student of Pelita Nusantara Vocational High School. I am a Grade 11 student in Software Engineering with a strong interest in art and technology. I enjoy learning new things, especially in the fields of design, programming, and digital editing. I also have good communication skills and enjoy working in a team.</p>
   </section>
 
   <section id="skills" class="skills fade-in">
@@ -52,44 +156,80 @@
   </section>
 
   <section id="projects" class="projects fade-in">
-  <h2>Projects</h2>
-  <div class="project-list">
-    <div class="project">
-      <img src="jam.png " alt="Jam Digital">
-      <div class="project-content">
-        <h3>Jam Digital</h3>
-        <p>Jam digital interaktif berbasis HTML, CSS</p>
-        <a href="https://gitttaaa.github.io/jam/" target="_blank">Lihat Project</a>
+    <h2>Projects</h2>
+    <div class="project-list">
+      <div class="project">
+        <img src="/library/jam.png" alt="Jam Digital">
+        <div class="project-content">
+          <h3>Jam Digital</h3>
+          <p>Jam digital interaktif berbasis HTML, CSS</p>
+          <a href="https://gitttaaa.github.io/jam/" target="_blank">Lihat Project</a>
+        </div>
+      </div>
+
+      <div class="project">
+        <img src="/library/todolist.png" alt="To Do List">
+        <div class="project-content">
+          <h3>To Do List</h3>
+          <p>To Do List untuk menulis kegiatan atau tugas</p>
+          <a href="https://gitttaaa.github.io/todoo/" target="_blank">Lihat Project</a>
+        </div>
+      </div>
+
+      <div class="project">
+        <img src="/library/undangan.png" alt="Kartu Undangan">
+        <div class="project-content">
+          <h3>Undangan</h3>
+          <p>Undangan Ulang Tahun</p>
+          <a href="https://gitttaaa.github.io/Undangan/" target="_blank">Lihat Project</a>
+        </div>
       </div>
     </div>
+  </section>
 
-    <div class="project">
-      <img src="todolist.png" alt="Jam Digital">
-      <div class="project-content">
-        <h3>To Do List</h3>
-        <p> To Do List untuk menulis kegiatan atau tugas</p>
-        <a href="https://gitttaaa.github.io/todoo/" target="_blank">Lihat Project</a>
+  <!-- BAGIAN SERTIFIKAT YANG SUDAH DIPERBAIKI - TANPA MENGUBAH WARNA -->
+  <section id="sertifikat" class="sertifikat fade-in">
+    <h2>Sertifikat</h2>
+    <div class="sertifikat-list">
+      <!-- Sertifikat 1 -->
+      <div class="sertifikat-item">
+        <div class="sertifikat-preview">
+        <img src="/library/Birgita Grecia Haryanto Sertifikat Webinar Introduction to Capture the Flag_page-0001.jpg" alt="Sertifikat 1">
+        </div>
+        <a href="/library/Birgita Grecia Haryanto Sertifikat Webinar Introduction to Capture the Flag_page-0001.jpg" target="_blank" class="pdf-link">
+          📥 Lihat Sertifikat
+        </a>
+      </div>
+
+      <!-- Sertifikat 2 -->
+      <div class="sertifikat-item">
+        <div class="sertifikat-preview">
+        <img src="/library/From Vision to Version 1.0 Roadmapping Your Game Effectively_page-0001.jpg" alt="Sertifikat 1">
+        
+        </div>
+        <a href="/library/From Vision to Version 1.0 Roadmapping Your Game Effectively.pdf" target="_blank" class="pdf-link">
+          📥 Lihat Sertifikat
+        </a>
+      </div>
+
+      <!-- Sertifikat 3 -->
+      <div class="sertifikat-item">
+        <div class="sertifikat-preview">
+        <img src="/library/Game Design From hobby to hook_page-0001.jpg" alt="Sertifikat 1">
+        </div>
+        <a href="/library/Game Design From hobby to hook.pdf" target="_blank" class="pdf-link">
+          📥 Lihat Sertifikat
+        </a>
       </div>
     </div>
-
-    <div class="project">
-      <img src="Screenshot 2025-09-25 104916.png" alt="Kartu Undangan">
-      <div class="project-content">
-        <h3>Undangan</h3>
-        <p>Undangan Ulang Tahun</p>
-        <a href="https://gitttaaa.github.io/Undangan/" target="_blank">Lihat Project</a>
-      </div>
-    </div>
-  </div>
-</section>
-
+  </section>
 
   <section id="contact" class="contact fade-in">
     <h2>Contact</h2>
     <p>✉️ Email: <a href="mailto:birgitagrecia1609@gmail.com">birgitagrecia1609@gmail.com</a></p>
-    <p>📞 Telp: <a href="https://wa.me/6287853206899">+62 812-3456-789</a></p>
-    <p>🐙 GitHub: <a href="https://github.com/gitttaaa" target="_blank">github.com/birgitagrecia</a></p>
-    <p>    Linkedin: <a href="https://www.linkedin.com/in/birgita-grecia-h-755148422?utm_source=share_via&utm_content=profile&utm_medium=member_android"> Linkedin </a></p></p>
+    <p>📞 Telp: <a href="https://wa.me/6287853206899">+62 878-5320-6899</a></p>
+    <p>🐙 GitHub: <a href="https://github.com/gitttaaa" target="_blank">github.com/gitttaaa</a></p>
+    <p>🔗 LinkedIn: <a href="https://www.linkedin.com/in/birgita-grecia-h-755148422" target="_blank">Birgita Grecia</a></p>
   </section>
 
   <footer>
@@ -99,16 +239,23 @@
   <script>
     // Animasi fade-in saat scroll
     const faders = document.querySelectorAll('.fade-in');
-    const appearOptions = { threshold: 0.2, rootMargin: "0px 0px -50px 0px" };
-    const appearOnScroll = new IntersectionObserver((entries, observer)=>{
-      entries.forEach(entry=>{
-        if(entry.isIntersecting){
+    const appearOptions = { 
+      threshold: 0.2, 
+      rootMargin: "0px 0px -50px 0px" 
+    };
+    
+    const appearOnScroll = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
           entry.target.classList.add('show');
-          observer.unobserve(entry.target);
+          appearOnScroll.unobserve(entry.target);
         }
       });
     }, appearOptions);
-    faders.forEach(fader=>{ appearOnScroll.observe(fader) });
+    
+    faders.forEach(fader => { 
+      appearOnScroll.observe(fader); 
+    });
   </script>
 </body>
 </html>
