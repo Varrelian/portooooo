@@ -5,93 +5,333 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Portofolio — Birgita Grecia</title>
   <style>
-    /* Tambahan CSS khusus untuk sertifikat - tanpa mengubah warna */
-    .sertifikat-list {
+    /* ===== RESET & BASE ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+      background: #fcf8fa;
+      color: #2d2a2c;
+      line-height: 1.6;
+      padding: 0 20px;
+    }
+
+    :root {
+      --accent: #c4457a;
+      --accent-dark: #a83664;
+      --muted: #6b5e64;
+      --bg-soft: #fff7fa;
+      --shadow: 0 6px 18px rgba(0,0,0,0.06);
+    }
+
+    header {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px 0 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      border-bottom: 2px solid #ffe3ef;
+      position: relative;
+    }
+
+    header h1 {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: -0.5px;
+    }
+
+    /* ===== HAMBURGER BUTTON ===== */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      gap: 5px;
+      padding: 5px;
+      background: transparent;
+      border: none;
+      z-index: 100;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 28px;
+      height: 3px;
+      background: var(--accent);
+      border-radius: 4px;
+      transition: 0.3s ease;
+    }
+
+    .hamburger.active span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 6px);
+    }
+
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hamburger.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -6px);
+    }
+
+    nav ul {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #3d353a;
+      font-weight: 500;
+      font-size: 1rem;
+      transition: 0.2s;
+      padding: 4px 0;
+      border-bottom: 2px solid transparent;
+    }
+
+    nav a:hover {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+
+    section {
+      max-width: 1100px;
+      margin: 50px auto;
+      padding: 0 10px;
+    }
+
+    h2 {
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 24px;
+      color: #2d2a2c;
+      position: relative;
+      display: inline-block;
+    }
+
+    h2::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -6px;
+      width: 50%;
+      height: 4px;
+      background: var(--accent);
+      border-radius: 4px;
+    }
+
+    /* ===== FADE-IN ===== */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .fade-in.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ===== HERO ===== */
+    .hero-container {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      flex-wrap: wrap;
+      background: var(--bg-soft);
+      padding: 30px 35px;
+      border-radius: 40px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero-container img {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid white;
+      box-shadow: 0 8px 18px rgba(196, 69, 122, 0.15);
+    }
+
+    .hero-text h2 {
+      font-size: 2.2rem;
+      margin-bottom: 6px;
+    }
+
+    .hero-text p {
+      font-size: 1.2rem;
+      color: var(--muted);
+    }
+
+    /* ===== ABOUT ===== */
+    .about p {
+      max-width: 780px;
+      background: white;
+      padding: 24px 30px;
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      font-size: 1.05rem;
+      border-left: 6px solid var(--accent);
+    }
+
+    /* ===== SKILLS ===== */
+    .skills-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px 20px;
+      background: white;
+      padding: 28px 30px;
+      border-radius: 30px;
+      box-shadow: var(--shadow);
+    }
+
+    .skill {
+      background: #fcecf3;
+      padding: 8px 24px;
+      border-radius: 40px;
+      font-weight: 500;
+      color: #3d2a33;
+      font-size: 0.95rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+      transition: 0.2s;
+      border: 1px solid #ffdae9;
+    }
+
+    .skill:hover {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+      transform: scale(1.02);
+    }
+
+    /* ===== PROJECTS ===== */
+    .project-list {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 30px;
-      margin-top: 30px;
     }
 
-    .sertifikat-item {
-      background: #fff;
-      border-radius: 18px;
-      padding: 25px;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-      transition: all 0.4s ease;
-      text-align: center;
+    .project {
+      background: white;
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: 0.35s ease;
       display: flex;
       flex-direction: column;
     }
 
-    .sertifikat-item:hover {
+    .project:hover {
       transform: translateY(-8px);
-      box-shadow: 0 12px 28px rgba(0,0,0,0.12);
+      box-shadow: 0 14px 30px rgba(0,0,0,0.08);
     }
 
-    .sertifikat-preview {
+    .project img {
       width: 100%;
-      height: 200px;
-      background: #f8f0f4;
-      border-radius: 12px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      border: 2px dashed #ffd6e9;
-      margin-bottom: 15px;
-      transition: all 0.3s ease;
+      height: 180px;
+      object-fit: cover;
+      background: #f2e6ec;
     }
 
-    .sertifikat-preview:hover {
-      border-color: var(--accent);
-      background: #fff6fb;
+    .project-content {
+      padding: 20px 22px 24px;
     }
 
-    .sertifikat-preview .icon {
-      font-size: 50px;
-      margin-bottom: 8px;
+    .project-content h3 {
+      font-size: 1.3rem;
+      margin-bottom: 6px;
     }
 
-    .sertifikat-preview .label {
-      font-size: 14px;
+    .project-content p {
       color: var(--muted);
-      font-weight: 500;
+      font-size: 0.95rem;
+      margin-bottom: 16px;
     }
 
     .project-content a {
       display: inline-block;
       background: var(--accent);
-      color: #fff;
-      font-weight: 600;
-      padding: 10px 24px;
-      border-radius: 8px;
+      color: white;
       text-decoration: none;
-      transition: all 0.3s ease;
-      margin-top: 5px;
-      width: 100%;
+      padding: 10px 22px;
+      border-radius: 40px;
+      font-weight: 500;
+      transition: 0.25s;
+      font-size: 0.9rem;
     }
 
     .project-content a:hover {
       background: var(--accent-dark);
-      transform: scale(1.05);
+      transform: scale(1.02);
     }
 
-    .sertifikat-item .sertifikat-title {
-      font-size: 14px;
-      color: var(--muted);
-      margin-top: 12px;
-      font-weight: 500;
+    /* ===== CAROUSEL SERTIFIKAT ===== */
+    .carousel-section {
+      position: relative;
+      padding: 0 50px;
     }
 
-    /* Jika ingin menampilkan gambar (konversi PDF ke PNG/JPG dulu) */
+    .carousel-wrapper {
+      overflow: hidden;
+      position: relative;
+      border-radius: 28px;
+      background: transparent;
+      cursor: grab;
+      user-select: none;
+      -webkit-user-select: none;
+      padding: 10px 0;
+    }
+
+    .carousel-wrapper:active {
+      cursor: grabbing;
+    }
+
+    .carousel-container {
+      display: flex;
+      gap: 30px;
+      padding: 16px 10px;
+      transition: none;
+      will-change: transform;
+    }
+
+    .sertifikat-item {
+      flex: 0 0 auto;
+      width: 280px;
+      background: white;
+      border-radius: 28px;
+      padding: 18px 18px 24px;
+      box-shadow: var(--shadow);
+      transition: 0.35s ease;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      pointer-events: auto;
+    }
+
+    .sertifikat-item:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 14px 28px rgba(0,0,0,0.12);
+    }
+
     .sertifikat-item img {
       width: 100%;
       height: 200px;
       object-fit: cover;
-      border-radius: 12px;
-      border: 2px solid #ffd6e9;
-      transition: all 0.3s ease;
+      border-radius: 18px;
+      border: 2px solid #ffe3ef;
+      transition: 0.3s;
+      background: #faf0f4;
+      pointer-events: none;
     }
 
     .sertifikat-item img:hover {
@@ -99,12 +339,184 @@
       transform: scale(1.02);
     }
 
-    /* Responsive */
-    @media (max-width: 768px) {
-      .sertifikat-list {
+    .sertifikat-item .pdf-link {
+      display: inline-block;
+      background: var(--accent);
+      color: white;
+      font-weight: 600;
+      padding: 12px 18px;
+      border-radius: 40px;
+      text-decoration: none;
+      transition: 0.3s;
+      margin-top: 16px;
+      width: 100%;
+      font-size: 0.95rem;
+      pointer-events: auto;
+    }
+
+    .sertifikat-item .pdf-link:hover {
+      background: var(--accent-dark);
+      transform: scale(1.02);
+    }
+
+    /* ===== TOMBOL NAVIGASI ===== */
+    .carousel-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(196, 69, 122, 0.9);
+      color: white;
+      border: none;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: 0.3s ease;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(196, 69, 122, 0.3);
+    }
+
+    .carousel-btn:hover {
+      background: var(--accent-dark);
+      transform: translateY(-50%) scale(1.1);
+      box-shadow: 0 6px 20px rgba(196, 69, 122, 0.4);
+    }
+
+    .carousel-btn:active {
+      transform: translateY(-50%) scale(0.95);
+    }
+
+    .carousel-btn.prev {
+      left: 0;
+    }
+
+    .carousel-btn.next {
+      right: 0;
+    }
+
+    /* ===== CONTACT ===== */
+    .contact {
+      background: var(--bg-soft);
+      padding: 30px 35px;
+      border-radius: 40px;
+      box-shadow: var(--shadow);
+    }
+
+    .contact p {
+      margin: 12px 0;
+      font-size: 1.05rem;
+    }
+
+    .contact a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 500;
+      border-bottom: 1px dotted transparent;
+      transition: 0.2s;
+    }
+
+    .contact a:hover {
+      border-bottom-color: var(--accent);
+    }
+
+    footer {
+      max-width: 1100px;
+      margin: 10px auto 40px;
+      text-align: center;
+      color: var(--muted);
+      border-top: 1px solid #f0e2e8;
+      padding-top: 20px;
+      font-size: 0.9rem;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 750px) {
+      .hamburger {
+        display: flex;
+      }
+
+      nav {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        padding: 0 20px;
+        border-radius: 0 0 24px 24px;
+        box-shadow: 0 20px 30px rgba(0,0,0,0.08);
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.4s ease, padding 0.3s ease;
+        z-index: 99;
+      }
+
+      nav.open {
+        max-height: 400px;
+        padding: 20px 20px 30px;
+        border-top: 2px solid #ffe3ef;
+      }
+
+      nav ul {
+        flex-direction: column;
+        gap: 14px;
+        align-items: center;
+      }
+
+      nav a {
+        font-size: 1.1rem;
+        display: block;
+        padding: 6px 0;
+      }
+
+      .hero-container {
+        flex-direction: column;
+        text-align: center;
+        padding: 25px 20px;
+      }
+
+      .hero-text h2 {
+        font-size: 1.8rem;
+      }
+
+      .project-list {
         grid-template-columns: 1fr;
         max-width: 400px;
-        margin: 30px auto 0;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .carousel-section {
+        padding: 0 40px;
+      }
+
+      .carousel-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 1.2rem;
+      }
+    }
+
+    @media (max-width: 650px) {
+      .sertifikat-item {
+        width: 220px;
+        padding: 14px 14px 20px;
+      }
+      .sertifikat-item img {
+        height: 150px;
+      }
+
+      .carousel-section {
+        padding: 0 35px;
+      }
+
+      .carousel-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 1rem;
       }
     }
 
@@ -112,13 +524,42 @@
       body { padding: 0 12px; }
       section { margin: 30px auto; }
       header h1 { font-size: 1.4rem; }
+      
+      .sertifikat-item {
+        width: 180px;
+        padding: 10px 10px 16px;
+      }
+      .sertifikat-item img {
+        height: 120px;
+      }
+      .sertifikat-item .pdf-link {
+        font-size: 0.75rem;
+        padding: 8px 12px;
+      }
+
+      .carousel-section {
+        padding: 0 30px;
+      }
+
+      .carousel-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 0.8rem;
+      }
     }
   </style>
 </head>
 <body>
   <header>
     <h1>My Portfolio</h1>
-    <nav>
+    
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <nav id="navMenu">
       <ul>
         <li><a href="#home">Home</a></li>
         <li><a href="#about">About</a></li>
@@ -195,40 +636,129 @@
     </div>
   </section>
 
-  <!-- BAGIAN SERTIFIKAT YANG SUDAH DIPERBAIKI - TANPA MENGUBAH WARNA -->
+  <!-- ===== SERTIFIKAT (CAROUSEL DENGAN TOMBOL) ===== -->
   <section id="sertifikat" class="sertifikat fade-in">
     <h2>Sertifikat</h2>
-    <div class="sertifikat-list">
-      <!-- Sertifikat 1 -->
-      <div class="sertifikat-item">
-        <div class="sertifikat-preview">
-        <img src="/library/Birgita Grecia Haryanto Sertifikat Webinar Introduction to Capture the Flag_page-0001.jpg" alt="Sertifikat 1">
+    
+    <div class="carousel-section">
+      <!-- Tombol Kiri -->
+      <button class="carousel-btn prev" id="prevBtn" aria-label="Previous">‹</button>
+      
+      <div class="carousel-wrapper">
+        <div class="carousel-container" id="carouselContainer">
+          
+          <!-- Sertifikat 1 -->
+          <div class="sertifikat-item">
+            <img src="/library/Birgita Grecia Haryanto Sertifikat Webinar Introduction to Capture the Flag_page-0001.jpg" alt="Sertifikat Webinar Capture the Flag">
+            <a href="/library/Birgita Grecia Haryanto Sertifikat Webinar Introduction to Capture the Flag_page-0001.jpg" target="_blank" class="pdf-link">
+              📥 Lihat Sertifikat
+            </a>
+          </div>
+
+          <!-- Sertifikat 2 -->
+          <div class="sertifikat-item">
+            <img src="/library/From Vision to Version 1.0 Roadmapping Your Game Effectively_page-0001.jpg" alt="Sertifikat Roadmapping Game">
+            <a href="/library/From Vision to Version 1.0 Roadmapping Your Game Effectively.pdf" target="_blank" class="pdf-link">
+              📥 Lihat Sertifikat
+            </a>
+          </div>
+
+          <!-- Sertifikat 3 -->
+          <div class="sertifikat-item">
+            <img src="/library/Game Design From hobby to hook_page-0001.jpg" alt="Sertifikat Game Design">
+            <a href="/library/Game Design From hobby to hook.pdf" target="_blank" class="pdf-link">
+              📥 Lihat Sertifikat
+            </a>
+          </div>
+
+          <!-- ===== TAMBAHAN 4 SLOT BARU ===== -->
+          <!-- Sertifikat 4 -->
+          <div class="sertifikat-item">
+            <img src="/library/Cara mengendalikan Diri saat Grogi, Gemetar, atau Lupa materi.jpeg" alt="Sertifikat 4">
+            <a href="/library/Cara mengendalikan Diri saat Grogi, Gemetar, atau Lupa materi.jpeg" target="_blank" class="pdf-link">
+              📥 Lihat Sertifikat
+            </a>
+          </div>
+
+          <!-- Sertifikat 5 -->
+          <div class="sertifikat-item">
+            <img src="/library/Content Mastery.jpeg" alt="Sertifikat 5">
+            <a href="/library/Content Mastery.jpeg" target="_blank" class="pdf-link">
+              📥 Lihat Sertifikat
+            </a>
+          </div>
+
+          <!-- Sertifikat 6 -->
+          <div class="sertifikat-item">
+            <img src="/library/google cloud.png" alt="Sertifikat 6">
+            <a href="/library/google cloud.pdf" target="_blank" class="pdf-link">
+              📥 Lihat Sertifikat
+            </a>
+          </div>
+
+          <!-- Sertifikat 7 -->
+          <div class="sertifikat-item">
+            <img src="/library/Strategi pengembang.jpg" alt="Sertifikat 7">
+            <a href="/library/Strategi pengembang.jpg" target="_blank" class="pdf-link">
+              📥 Lihat Sertifikat
+            </a>
+          </div>
+
+          <!-- DUPLIKAT UNTUK LOOPING -->
+          <div class="sertifikat-item">
+            <img src="/library/Birgita Grecia Haryanto Sertifikat Webinar Introduction to Capture the Flag_page-0001.jpg" alt="Sertifikat Webinar Capture the Flag">
+            <a href="/library/Birgita Grecia Haryanto Sertifikat Webinar Introduction to Capture the Flag_page-0001.jpg" target="_blank" class="pdf-link">
+              📥 Lihat Sertifikat
+            </a>
+          </div>
+
+          <div class="sertifikat-item">
+            <img src="/library/From Vision to Version 1.0 Roadmapping Your Game Effectively_page-0001.jpg" alt="Sertifikat Roadmapping Game">
+            <a href="/library/From Vision to Version 1.0 Roadmapping Your Game Effectively.pdf" target="_blank" class="pdf-link">
+              📥 Lihat Sertifikat
+            </a>
+          </div>
+
+          <div class="sertifikat-item">
+            <img src="/library/Game Design From hobby to hook_page-0001.jpg" alt="Sertifikat Game Design">
+            <a href="/library/Game Design From hobby to hook.pdf" target="_blank" class="pdf-link">
+              📥 Lihat Sertifikat
+            </a>
+          </div>
+
+          <div class="sertifikat-item">
+            <img src="/library/sertifikat4.jpg" alt="Sertifikat 4">
+            <a href="/library/sertifikat4.pdf" target="_blank" class="pdf-link">
+              📥 Lihat Sertifikat
+            </a>
+          </div>
+
+          <div class="sertifikat-item">
+            <img src="/library/sertifikat5.jpg" alt="Sertifikat 5">
+            <a href="/library/sertifikat5.pdf" target="_blank" class="pdf-link">
+              📥 Lihat Sertifikat
+            </a>
+          </div>
+
+          <div class="sertifikat-item">
+            <img src="/library/sertifikat6.jpg" alt="Sertifikat 6">
+            <a href="/library/sertifikat6.pdf" target="_blank" class="pdf-link">
+              📥 Lihat Sertifikat
+            </a>
+          </div>
+
+          <div class="sertifikat-item">
+            <img src="/library/sertifikat7.jpg" alt="Sertifikat 7">
+            <a href="/library/sertifikat7.pdf" target="_blank" class="pdf-link">
+              📥 Lihat Sertifikat
+            </a>
+          </div>
+
         </div>
-        <a href="/library/Birgita Grecia Haryanto Sertifikat Webinar Introduction to Capture the Flag_page-0001.jpg" target="_blank" class="pdf-link">
-          📥 Lihat Sertifikat
-        </a>
       </div>
 
-      <!-- Sertifikat 2 -->
-      <div class="sertifikat-item">
-        <div class="sertifikat-preview">
-        <img src="/library/From Vision to Version 1.0 Roadmapping Your Game Effectively_page-0001.jpg" alt="Sertifikat 1">
-        
-        </div>
-        <a href="/library/From Vision to Version 1.0 Roadmapping Your Game Effectively.pdf" target="_blank" class="pdf-link">
-          📥 Lihat Sertifikat
-        </a>
-      </div>
-
-      <!-- Sertifikat 3 -->
-      <div class="sertifikat-item">
-        <div class="sertifikat-preview">
-        <img src="/library/Game Design From hobby to hook_page-0001.jpg" alt="Sertifikat 1">
-        </div>
-        <a href="/library/Game Design From hobby to hook.pdf" target="_blank" class="pdf-link">
-          📥 Lihat Sertifikat
-        </a>
-      </div>
+      <!-- Tombol Kanan -->
+      <button class="carousel-btn next" id="nextBtn" aria-label="Next">›</button>
     </div>
   </section>
 
@@ -246,7 +776,233 @@
   </footer>
 
   <script>
-    // Animasi fade-in saat scroll
+    // ===== CAROUSEL SERTIFIKAT DENGAN TOMBOL =====
+    const carousel = document.getElementById('carouselContainer');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    
+    let isDragging = false;
+    let startX = 0;
+    let currentTranslateX = 0;
+    let prevTranslateX = 0;
+    let autoSlideInterval = null;
+    const slideSpeed = 0.6;
+    const pauseOnHover = true;
+    
+    const totalItems = carousel.querySelectorAll('.sertifikat-item').length;
+    const originalItems = totalItems / 2;
+    let itemWidth = 0;
+    let containerWidth = 0;
+
+    // Update ukuran
+    function updateSizes() {
+      const items = carousel.querySelectorAll('.sertifikat-item');
+      if (items.length === 0) return;
+      itemWidth = items[0].offsetWidth + 30;
+      containerWidth = carousel.parentElement.clientWidth;
+    }
+
+    // Auto-slide
+    function startAutoSlide() {
+      if (autoSlideInterval) return;
+      autoSlideInterval = setInterval(() => {
+        if (!isDragging) {
+          currentTranslateX -= slideSpeed;
+          const maxScroll = (itemWidth * originalItems) - containerWidth;
+          if (Math.abs(currentTranslateX) >= maxScroll + itemWidth) {
+            carousel.style.transition = 'none';
+            currentTranslateX = 0;
+            setTranslateX(currentTranslateX);
+            void carousel.offsetHeight;
+            carousel.style.transition = 'transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+          } else {
+            setTranslateX(currentTranslateX);
+          }
+        }
+      }, 16);
+    }
+
+    function stopAutoSlide() {
+      clearInterval(autoSlideInterval);
+      autoSlideInterval = null;
+    }
+
+    function setTranslateX(value) {
+      carousel.style.transform = `translateX(${value}px)`;
+      prevTranslateX = value;
+    }
+
+    // Pindah ke slide tertentu
+    function goToSlide(index) {
+      stopAutoSlide();
+      const targetPos = -(index * itemWidth);
+      const maxScroll = (itemWidth * originalItems) - containerWidth;
+      let newPos = Math.max(Math.min(targetPos, 0), -maxScroll);
+      
+      carousel.style.transition = 'transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+      currentTranslateX = newPos;
+      setTranslateX(newPos);
+      
+      if (Math.abs(newPos) >= maxScroll) {
+        setTimeout(() => {
+          carousel.style.transition = 'none';
+          currentTranslateX = 0;
+          setTranslateX(0);
+          void carousel.offsetHeight;
+          carousel.style.transition = 'transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+        }, 500);
+      }
+      
+      setTimeout(() => {
+        if (!isDragging) startAutoSlide();
+      }, 3000);
+    }
+
+    // Navigasi dengan tombol
+    function nextSlide() {
+      updateSizes();
+      const currentPos = Math.abs(prevTranslateX);
+      const currentIndex = Math.round(currentPos / itemWidth);
+      const nextIndex = currentIndex + 1;
+      
+      if (nextIndex >= originalItems) {
+        goToSlide(0);
+      } else {
+        goToSlide(nextIndex);
+      }
+    }
+
+    function prevSlide() {
+      updateSizes();
+      const currentPos = Math.abs(prevTranslateX);
+      const currentIndex = Math.round(currentPos / itemWidth);
+      const prevIndex = currentIndex - 1;
+      
+      if (prevIndex < 0) {
+        const maxScroll = (itemWidth * originalItems) - containerWidth;
+        const lastIndex = originalItems - 1;
+        goToSlide(lastIndex);
+      } else {
+        goToSlide(prevIndex);
+      }
+    }
+
+    // Event listeners tombol
+    nextBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      nextSlide();
+    });
+
+    prevBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      prevSlide();
+    });
+
+    // Drag
+    carousel.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      startX = e.clientX;
+      carousel.style.cursor = 'grabbing';
+      carousel.style.transition = 'none';
+      stopAutoSlide();
+    });
+
+    carousel.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      const diff = e.clientX - startX;
+      currentTranslateX = prevTranslateX + diff;
+      const maxScroll = (itemWidth * originalItems) - containerWidth;
+      if (currentTranslateX > 0) currentTranslateX = 0;
+      if (currentTranslateX < -maxScroll - itemWidth) currentTranslateX = -maxScroll - itemWidth;
+      setTranslateX(currentTranslateX);
+    });
+
+    carousel.addEventListener('mouseup', () => {
+      if (isDragging) {
+        isDragging = false;
+        carousel.style.cursor = 'grab';
+        carousel.style.transition = 'transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+        snapToNearest();
+        setTimeout(() => {
+          if (!isDragging) startAutoSlide();
+        }, 3000);
+      }
+    });
+
+    carousel.addEventListener('mouseleave', () => {
+      if (isDragging) {
+        isDragging = false;
+        carousel.style.cursor = 'grab';
+        carousel.style.transition = 'transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+        snapToNearest();
+        setTimeout(() => {
+          if (!isDragging) startAutoSlide();
+        }, 3000);
+      }
+    });
+
+    // Snap ke terdekat
+    function snapToNearest() {
+      updateSizes();
+      if (itemWidth === 0) return;
+      
+      const currentPos = Math.abs(prevTranslateX);
+      const nearestIndex = Math.round(currentPos / itemWidth);
+      let targetPos = -(nearestIndex * itemWidth);
+      const maxScroll = (itemWidth * originalItems) - containerWidth;
+      targetPos = Math.max(Math.min(targetPos, 0), -maxScroll);
+      
+      currentTranslateX = targetPos;
+      setTranslateX(targetPos);
+      
+      if (Math.abs(currentTranslateX) >= maxScroll) {
+        setTimeout(() => {
+          carousel.style.transition = 'none';
+          currentTranslateX = 0;
+          setTranslateX(0);
+          void carousel.offsetHeight;
+          carousel.style.transition = 'transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+        }, 500);
+      }
+    }
+
+    // Hover pause
+    if (pauseOnHover) {
+      const wrapper = carousel.parentElement;
+      wrapper.addEventListener('mouseenter', stopAutoSlide);
+      wrapper.addEventListener('mouseleave', () => {
+        if (!isDragging) startAutoSlide();
+      });
+    }
+
+    // Init
+    function initCarousel() {
+      updateSizes();
+      setTranslateX(0);
+      startAutoSlide();
+    }
+
+    window.addEventListener('load', () => {
+      setTimeout(initCarousel, 100);
+    });
+
+    // ===== HAMBURGER TOGGLE =====
+    const hamburger = document.getElementById('hamburger');
+    const navMenu = document.getElementById('navMenu');
+
+    hamburger.addEventListener('click', function() {
+      this.classList.toggle('active');
+      navMenu.classList.toggle('open');
+    });
+
+    document.querySelectorAll('nav a').forEach(link => {
+      link.addEventListener('click', () => {
+        hamburger.classList.remove('active');
+        navMenu.classList.remove('open');
+      });
+    });
+
+    // ===== FADE-IN SCROLL =====
     const faders = document.querySelectorAll('.fade-in');
     const appearOptions = { 
       threshold: 0.2, 
