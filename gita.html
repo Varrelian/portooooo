@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuis Interaktif Ekosistem Pemrograman Mobile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Poppins', sans-serif; }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-indigo-950 to-purple-950 min-h-screen text-slate-100 flex items-center justify-center p-4">
+
+    <div class="w-full max-w-3xl bg-slate-900/80 backdrop-blur-xl border border-slate-700/50 rounded-2xl shadow-2xl overflow-hidden">
+        
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-indigo-600 to-purple-600 p-6 text-center">
+            <h1 class="text-2xl font-bold tracking-wide">Kuis Ekosistem Pemrograman Mobile</h1>
+            <p class="text-indigo-200 text-sm mt-1">Uji pemahaman Anda dari 25 kisi-kisi materi kuliah (30 Soal)</p>
+        </div>
+
+        <!-- Start Screen -->
+        <div id="start-screen" class="p-8 text-center">
+            <div class="mb-6">
+                <span class="inline-block bg-indigo-500/20 text-indigo-300 px-4 py-1.5 rounded-full text-sm font-medium border border-indigo-500/30">Total 30 Soal Pilihan Ganda</span>
+            </div>
+            <p class="text-slate-300 mb-8 max-w-lg mx-auto">Kuis ini mencakup seluruh aspek pemrograman mobile mulai dari konsep ekosistem, Android Studio, SDK, UI/UX, Lifecycle, hingga publikasi aplikasi.</p>
+            <button onclick="startQuiz()" class="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-semibold px-8 py-3.5 rounded-xl shadow-lg transition-all duration-300 transform hover:scale-105">
+                Mulai Kuis Sekarang
+            </button>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quiz-screen" class="p-8 hidden">
+            <div class="flex justify-between items-center mb-6 text-sm font-medium text-slate-400">
+                <span id="question-progress">Soal 1 dari 30</span>
+                <span id="score-counter" class="text-indigo-400 font-semibold">Skor: 0</span>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="w-full bg-slate-800 h-2 rounded-full mb-6 overflow-hidden">
+                <div id="progress-bar" class="bg-gradient-to-r from-indigo-500 to-purple-500 h-full transition-all duration-300" style="width: 3.33%"></div>
+            </div>
+
+            <h2 id="question-text" class="text-lg font-semibold text-white mb-6 leading-relaxed">Pertanyaan akan muncul di sini...</h2>
+
+            <div id="options-container" class="space-y-3 mb-6">
+                <!-- Pilihan opsi akan dirender lewat JS -->
+            </div>
+
+            <div id="explanation-container" class="hidden bg-slate-800/80 border border-slate-700 p-4 rounded-xl mb-6 text-sm text-slate-300">
+                <p class="font-semibold text-indigo-400 mb-1">Penjelasan:</p>
+                <p id="explanation-text"></p>
+            </div>
+
+            <div class="flex justify-end">
+                <button id="next-btn" onclick="nextQuestion()" class="hidden bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-6 py-2.5 rounded-xl transition-all shadow-md">
+                    Selanjutnya
+                </button>
+            </div>
+        </div>
+
+        <!-- Result Screen -->
+        <div id="result-screen" class="p-8 text-center hidden">
+            <div class="mb-6">
+                <div class="w-20 h-20 bg-indigo-500/20 border border-indigo-500/40 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-10 h-10 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </div>
+                <h2 class="text-2xl font-bold text-white">Kuis Selesai!</h2>
+                <p class="text-slate-400 mt-1">Terima kasih telah menyelesaikan kuis ekosistem pemrograman mobile.</p>
+            </div>
+
+            <div class="bg-slate-800/50 border border-slate-700/60 p-6 rounded-2xl max-w-sm mx-auto mb-8">
+                <p class="text-sm text-slate-400">Skor Akhir Anda</p>
+                <p id="final-score" class="text-4xl font-extrabold text-indigo-400 mt-2">0 / 30</p>
+                <p id="final-message" class="text-sm font-medium text-slate-300 mt-3"></p>
+            </div>
+
+            <button onclick="resetQuiz()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-8 py-3 rounded-xl transition-all shadow-lg">
+                Ulangi Kuis
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+        const questions = [
+            // 1. Pengertian ekosistem pemrograman mobile
+            {
+                question: "Apa yang dimaksud dengan ekosistem pemrograman mobile?",
+                options: [
+                    "Kumpulan perangkat keras komputer server saja",
+                    "Keseluruhan lingkungan, alat, platform, bahasa, dan pustaka yang mendukung siklus hidup pembuatan aplikasi perangkat bergerak",
+                    "Sistem operasi khusus untuk komputer desktop berskala besar",
+                    "Jaringan telekomunikasi seluler tanpa kabel"
+                ],
+                correct: 1,
+                explanation: "Ekosistem pemrograman mobile mencakup keseluruhan komponen terintegrasi mulai dari OS, hardware, IDE, SDK, bahasa pemrograman, hingga saluran distribusi aplikasi."
+            },
+            // 2. Perkembangan teknologi aplikasi mobile
+            {
+                question: "Pada masa-masa awal sebelum smartphone modern mendominasi, teknologi aplikasi mobile umumnya berbasis pada platform apa?",
+                options: [
+                    "Flutter dan React Native",
+                    "J2ME (Java 2 Micro Edition) dan platform berbasis fitur ponsel konvensional",
+                    "Cloud-native microservices",
+                    "WebAssembly berbasis browser desktop"
+                ],
+                correct: 1,
+                explanation: "Sebelum era smartphone modern (Android/iOS), J2ME dan platform proprietary ponsel fitur menjadi fondasi awal aplikasi mobile."
+            },
+            // 3. Jenis-jenis platform mobile seperti Android dan iOS
+            {
+                question: "Manakah pernyataan yang paling tepat mengenai sistem operasi Android dan iOS?",
+                options: [
+                    "Keduanya menggunakan kernel yang sama persis dan bersifat open-source sepenuhnya",
+                    "Android dikembangkan oleh Google dengan basis open-source, sedangkan iOS dikembangkan oleh Apple dengan sistem tertutup (proprietary)",
+                    "iOS bersifat open-source dan Android dikendalikan secara eksklusif oleh Apple",
+                    "Keduanya hanya dapat dijalankan di atas arsitektur prosesor x86 desktop"
+                ],
+                correct: 1,
+                explanation: "Android bersifat open-source berbasis Linux di bawah naungan Google, sementara iOS adalah sistem operasi proprietary eksklusif buatan Apple untuk perangkatnya."
+            },
+            // 4. Perbedaan pengembangan aplikasi Android dan iOS
+            {
+                question: "Salah satu perbedaan mendasar antara ekosistem pengembangan Android dan iOS dari sisi bahasa pemrograman native adalah...",
+                options: [
+                    "Android menggunakan Kotlin/Java, sedangkan iOS menggunakan Swift/Objective-C",
+                    "Android menggunakan C++ murni, sedangkan iOS menggunakan Python",
+                    "Android menggunakan PHP, sedangkan iOS menggunakan Ruby",
+                    "Android menggunakan C#, sedangkan iOS menggunakan Assembly"
+                ],
+                correct: 0,
+                explanation: "Bahasa pemrograman utama (native) untuk Android adalah Kotlin dan Java, sementara untuk iOS menggunakan Swift dan Objective-C."
+            },
+            // 5. Bahasa pemrograman untuk pengembangan aplikasi mobile
+            {
+                question: "Bahasa pemrograman modern yang saat ini direkomendasikan secara resmi oleh Google untuk pengembangan aplikasi Android native adalah...",
+                options: [
+                    "Visual Basic",
+                    "Kotlin",
+                    "Perl",
+                    "Fortran"
+                ],
+                correct: 1,
+                explanation: "Kotlin telah ditetapkan sebagai bahasa pemrograman pilihan utama (preferred language) oleh Google untuk pengembangan Android."
+            },
+            // 6. Android Studio sebagai lingkungan pengembangan aplikasi
+            {
+                question: "Apa nama Integrated Development Environment (IDE) resmi yang disediakan oleh Google untuk pengembangan aplikasi Android?",
+                options: [
+                    "Xcode",
+                    "Eclipse Classic",
+                    "Android Studio",
+                    "Visual Studio Code"
+                ],
+                correct: 2,
+                explanation: "Android Studio adalah IDE resmi berbasis IntelliJ IDEA yang dirancang khusus untuk membangun aplikasi Android."
+            },
+            // 7. Integrated Development Environment (IDE) dalam pemrograman mobile
+            {
+                question: "Fungsi utama dari sebuah IDE (Integrated Development Environment) dalam pengembangan mobile adalah...",
+                options: [
+                    "Menyediakan paket alat terpadu termasuk editor kode, compiler, debugger, dan visual designer dalam satu antarmuka",
+                    "Menggantikan fungsi sistem operasi smartphone secara langsung",
+                    "Berfungsi sebagai server database online jarak jauh",
+                    "Mencetak dokumen fisik laporan kode sumber"
+                ],
+                correct: 0,
+                explanation: "IDE mengintegrasikan berbagai perangkat esensial seperti editor, alat build, dan debugger guna mempermudah proses penulisan kode."
+            },
+            // 8. Software Development Kit (SDK) dan fungsinya
+            {
+                question: "Apa fungsi utama dari Software Development Kit (SDK) dalam pengembangan aplikasi?",
+                options: [
+                    "Menyediakan kumpulan pustaka, API, dokumentasi, dan alat bantu kompilasi agar pengembang dapat membuat aplikasi untuk platform tertentu",
+                    "Mengatur kapasitas baterai perangkat keras secara fisik",
+                    "Mengamankan jaringan Wi-Fi lokal dari serangan siber",
+                    "Mengubah file teks biasa menjadi file video beresolusi tinggi"
+                ],
+                correct: 0,
+                explanation: "SDK adalah seperangkat alat pengembangan perangkat lunak yang memberikan akses ke API dan pustaka platform tertentu."
+            },
+            // 9. Android Software Development Kit (Android SDK)
+            {
+                question: "Komponen manakah di dalam Android SDK yang bertugas menyediakan emulator perangkat untuk menguji aplikasi tanpa perangkat fisik?",
+                options: [
+                    "Android Virtual Device (AVD) Manager / Emulator",
+                    "Gradle Daemon Manager",
+                    "SQLite Browser",
+                    "ProGuard Optimizer"
+                ],
+                correct: 0,
+                explanation: "Android Emulator berbasis AVD memungkinkan pengembang menjalankan dan menguji aplikasi secara virtual di komputer."
+            },
+            // 10. Framework dan library dalam pengembangan aplikasi mobile
+            {
+                question: "Manakah di bawah ini yang merupakan contoh framework cross-platform populer buatan Google untuk pengembangan aplikasi mobile?",
+                options: [
+                    "Flutter",
+                    "Laravel",
+                    "Django",
+                    "Spring Boot"
+                ],
+                correct: 0,
+                explanation: "Flutter adalah framework UI cross-platform open-source dari Google yang menggunakan bahasa Dart."
+            },
+            // 11. Konsep dasar aplikasi mobile
+            {
+                question: "Karakteristik utama yang membedakan aplikasi mobile dengan aplikasi desktop tradisional adalah...",
+                options: [
+                    "Ukuran layar yang bervariasi, keterbatasan sumber daya (baterai/memori), serta interaksi berbasis sentuhan (touch)",
+                    "Aplikasi mobile tidak memerlukan sistem operasi sama sekali",
+                    "Aplikasi mobile selalu membutuhkan koneksi internet berkecepatan tinggi tanpa kecuali",
+                    "Aplikasi mobile berjalan di atas mesin virtual Java standar desktop"
+                ],
+                correct: 0,
+                explanation: "Aplikasi mobile didesain memperhitungkan faktor mobilitas, sensor perangkat, efisiensi daya, layar sentuh, dan spesifikasi perangkat keras yang dinamis."
+            },
+            // 12. Struktur proyek aplikasi mobile
+            {
+                question: "Di dalam struktur proyek standar Android Studio, folder manakah yang biasanya menyimpan file layout antarmuka berbasis XML?",
+                options: [
+                    "res/layout",
+                    "java/com/example/app",
+                    "gradle/wrapper",
+                    "manifests/libs"
+                ],
+                correct: 0,
+                explanation: "Folder `res/layout` menampung file-file XML yang mendefinisikan struktur User Interface (UI) komponen aplikasi."
+            },
+            // 13. User Interface (UI) pada aplikasi mobile
+            {
+                question: "Fokus utama dari perancangan User Interface (UI) pada aplikasi mobile adalah...",
+                options: [
+                    "Tampilan visual, tata letak elemen, estetika, dan kemudahan interaksi visual bagi pengguna",
+                    "Optimasi algoritma enkripsi database backend",
+                    "Konfigurasi routing server cloud",
+                    "Pengaturan protokol jaringan TCP/IP"
+                ],
+                correct: 0,
+                explanation: "UI berkaitan erat dengan aspek visual dan estetika antarmuka yang dilihat serta disentuh oleh pengguna."
+            },
+            // 14. User Experience (UX) pada aplikasi mobile
+            {
+                question: "Manakah pernyataan yang paling akurat membedakan antara UI dan UX?",
+                options: [
+                    "UI berfokus pada keindahan tampilan visual, sedangkan UX berfokus pada keseluruhan pengalaman, kenyamanan, dan kepuasan pengguna saat menggunakan aplikasi",
+                    "UI dan UX adalah istilah yang mendeskripsikan hal yang sama persis",
+                    "UX hanya berkaitan dengan warna tombol, sedangkan UI berkaitan dengan kecepatan internet",
+                    "UX tidak penting dalam pengembangan aplikasi mobile modern"
+                ],
+                correct: 0,
+                explanation: "UI adalah bentuk visualnya, sementara UX mencakup pengalaman menyeluruh, alur penggunaan, efisiensi, dan emosi pengguna."
+            },
+            // 15. Activity dan Lifecycle pada aplikasi Android
+            {
+                question: "Metode callback manakah dalam siklus hidup (lifecycle) Activity Android yang dipanggil saat Activity mulai terlihat oleh pengguna tetapi belum berada di posisi fokus terdepan?",
+                options: [
+                    "onCreate()",
+                    "onStart()",
+                    "onResume()",
+                    "onDestroy()"
+                ],
+                correct: 1,
+                explanation: "Metode `onStart()` dipanggil ketika Activity bersiap untuk ditampilkan ke layar dan memasuki status started."
+            },
+            // 16. Layout dan komponen antarmuka aplikasi
+            {
+                question: "Layout manakah dalam Android yang menyusun komponen turunannya secara linear baik secara horizontal maupun vertikal?",
+                options: [
+                    "ConstraintLayout",
+                    "LinearLayout",
+                    "FrameLayout",
+                    "GridLayout"
+                ],
+                correct: 1,
+                explanation: "LinearLayout adalah kelompok tampilan yang menyelaraskan semua anak elemen dalam satu arah tunggal, baik secara vertikal maupun horizontal."
+            },
+            // 17. Event dan interaksi pengguna pada aplikasi mobile
+            {
+                question: "Bagaimana cara umum menangani kejadian saat pengguna menekan sebuah tombol (button click) di Android menggunakan Kotlin?",
+                options: [
+                    "button.setOnClickListener { /* aksi kode */ }",
+                    "button.setOnHoverListener { /* aksi kode */ }",
+                    "button.executeNetworkCall()",
+                    "button.compileXML()"
+                ],
+                correct: 0,
+                explanation: "Metode `setOnClickListener` digunakan untuk mendengarkan dan merespons aksi klik dari pengguna pada sebuah tombol."
+            },
+            // 18. Navigasi antarhalaman atau screen aplikasi
+            {
+                question: "Dalam pengembangan aplikasi Android modern, komponen arsitektur apa yang direkomendasikan Google untuk mengelola navigasi antar fragment atau screen?",
+                options: [
+                    "Navigation Component (NavController)",
+                    "SQLiteOpenHelper",
+                    "HTTPURLConnection",
+                    "BroadcastReceiver tunggal"
+                ],
+                correct: 0,
+                explanation: "Navigation Component memudahkan implementasi navigasi, perpindahan antar fragment, serta pengelolaan graf navigasi."
+            },
+            // 19. Penggunaan database dalam aplikasi mobile
+            {
+                question: "Database lokal ringan apa yang secara tradisional paling sering disematkan di dalam perangkat Android untuk penyimpanan data terstruktur?",
+                options: [
+                    "MySQL Server",
+                    "Oracle Database Enterprise",
+                    "SQLite (atau Room Persistence Library)",
+                    "MongoDB Cluster"
+                ],
+                correct: 2,
+                explanation: "SQLite adalah sistem database relasional ringan berbasis file yang tertanam secara native di dalam platform Android."
+            },
+            // 20. Application Programming Interface (API) dalam aplikasi mobile",
+            {
+                question: "Apa fungsi utama dari sebuah API dalam ekosistem aplikasi mobile?",
+                options: [
+                    "Menjadi jembatan komunikasi antara aplikasi mobile klien dengan server atau layanan pihak ketiga di internet",
+                    "Berfungsi sebagai emulator grafis layar sentuh",
+                    "Mengkompilasi file kode sumber menjadi file APK",
+                    "Mengatur kecerahan layar perangkat secara otomatis"
+                ],
+                correct: 0,
+                explanation: "API memungkinkan aplikasi mobile meminta data atau layanan dari server eksternal melalui protokol standar seperti HTTP/REST."
+            },
+            // 21. Integrasi aplikasi mobile dengan layanan web
+            {
+                question: "Format data standar apa yang paling sering digunakan untuk pertukaran data antara aplikasi mobile dan layanan web (web service)?",
+                options: [
+                    "JSON (JavaScript Object Notation)",
+                    "File teks berformat .docx",
+                    "Arsip terkompresi .zip",
+                    "File bitmap .bmp"
+                ],
+                correct: 0,
+                explanation: "JSON adalah format pertukaran data yang ringan, mudah dibaca mesin maupun manusia, serta menjadi standar de facto pada web API modern."
+            },
+            // 22. Pengujian aplikasi mobile
+            {
+                question: "Jenis pengujian (testing) manakah yang berfokus pada pengujian unit kode terkecil seperti fungsi atau logika kelas individual dalam aplikasi?",
+                options: [
+                    "Unit Testing",
+                    "UI/UX Visual Inspection",
+                    "Beta Public Distribution",
+                    "Hardware Stress Test"
+                ],
+                correct: 0,
+                explanation: "Unit testing menguji bagian terkecil dari kode (seperti fungsi atau metode) secara terisolasi untuk memastikan kebenarannya."
+            },
+            // 23. Debugging dan penanganan kesalahan aplikasi
+            {
+                question: "Fitur di dalam IDE yang menghentikan eksekusi program pada baris kode tertentu untuk memeriksa nilai variabel secara langsung disebut...",
+                options: [
+                    "Breakpoint dan Debugger",
+                    "Compiler Optimizer",
+                    "Garbage Collector",
+                    "Manifest Merger"
+                ],
+                correct: 0,
+                explanation: "Breakpoint memungkinkan pengembang menjeda jalannya program untuk melakukan inspeksi variabel dan alur eksekusi (debugging)."
+            },
+            // 24. Build, packaging, dan instalasi aplikasi mobile
+            {
+                question: "Format file standar yang digunakan untuk memaketkan (packaging) aplikasi Android modern agar siap didistribusikan ke Google Play Store adalah...",
+                options: [
+                    "Android App Bundle (.aab)",
+                    "Windows Executable (.exe)",
+                    "Mac Disk Image (.dmg)",
+                    "Linux Package (.deb)"
+                ],
+                correct: 0,
+                explanation: "Android App Bundle (.aab) adalah format penerbitan resmi yang memuat seluruh aset terkompilasi agar Google Play dapat menghasilkan APK yang dioptimalkan."
+            },
+            // 25. Publikasi dan distribusi aplikasi mobile melalui platform aplikasi
+            {
+                question: "Apa nama platform resmi milik Google tempat pengembang menerbitkan dan mendistribusikan aplikasi Android ke publik global?",
+                options: [
+                    "Google Play Store",
+                    "Apple App Store",
+                    "Microsoft Store",
+                    "Amazon Web Services"
+                ],
+                correct: 0,
+                explanation: "Google Play Store adalah toko aplikasi resmi utama untuk ekosistem sistem operasi Android."
+            },
+            // 26. Tambahan pengayaan siklus hidup Android
+            {
+                question: "Metode callback mana yang menandakan bahwa Activity akan segera dihancurkan (destroyed) dari memori sistem?",
+                options: [
+                    "onDestroy()",
+                    "onStop()",
+                    "onPause()",
+                    "onRestart()"
+                ],
+                correct: 0,
+                explanation: "`onDestroy()` adalah callback terakhir yang dipanggil sebelum Activity benar-benar dihapus dari memori."
+            },
+            // 27. Tambahan pengayaan layout modern
+            {
+                question: "Layout canggih dalam Android yang memungkinkan perletakan elemen berdasarkan relasi posisi antar komponen atau parent-nya dinamakan...",
+                options: [
+                    "ConstraintLayout",
+                    "AbsoluteLayout",
+                    "TableLayout",
+                    "ScrollLayout"
+                ],
+                correct: 0,
+                explanation: "ConstraintLayout dirancang untuk membuat hierarki tampilan yang datar dan fleksibel dengan menggunakan aturan constraint."
+            },
+            // 28. Tambahan pengayaan pustaka jaringan (networking library)
+            {
+                question: "Pustaka (library) HTTP client populer buatan Square yang sangat sering digunakan di Android untuk melakukan request ke REST API adalah...",
+                options: [
+                    "Retrofit",
+                    "SQLiteOpenHelper",
+                    "IntentService",
+                    "ViewBinding"
+                ],
+                correct: 0,
+                explanation: "Retrofit adalah pustaka type-safe HTTP client untuk Android dan Java/Kotlin yang mempermudah konsumsi web service."
+            },
+            // 29. Tambahan pengayaan arsitektur UI modern
+            {
+                question: "Toolkit modern deklaratif buatan Google untuk membangun UI native Android dengan kode Kotlin yang lebih sedikit disebut...",
+                options: [
+                    "Jetpack Compose",
+                    "XML Layout Engine",
+                    "Action Bar Classic",
+                    "Legacy View System"
+                ],
+                correct: 0,
+                explanation: "Jetpack Compose adalah perangkat toolkit modern rekomendasi Google untuk membangun UI native secara deklaratif."
+            },
+            // 30. Tambahan pengayaan konsep Intent
+            {
+                question: "Di dalam Android, objek messaging asinkron yang digunakan untuk melakukan navigasi antar Activity atau memulai layanan disebut...",
+                options: [
+                    "Intent",
+                    "Fragment",
+                    "Gradle",
+                    "Manifest"
+                ],
+                correct: 0,
+                explanation: "Intent adalah mekanisme perpesanan yang digunakan untuk meminta tindakan dari komponen aplikasi lain, seperti berpindah antar Activity."
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let answered = false;
+
+        const startScreen = document.getElementById('start-screen');
+        const quizScreen = document.getElementById('quiz-screen');
+        const resultScreen = document.getElementById('result-screen');
+        const questionProgress = document.getElementById('question-progress');
+        const scoreCounter = document.getElementById('score-counter');
+        const progressBar = document.getElementById('progress-bar');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const explanationContainer = document.getElementById('explanation-container');
+        const explanationText = document.getElementById('explanation-text');
+        const nextBtn = document.getElementById('next-btn');
+
+        function startQuiz() {
+            startScreen.classList.add('hidden');
+            quizScreen.classList.remove('hidden');
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            answered = false;
+            nextBtn.classList.add('hidden');
+            explanationContainer.classList.add('hidden');
+
+            const q = questions[currentQuestion];
+            questionProgress.innerText = `Soal ${currentQuestion + 1} dari ${questions.length}`;
+            scoreCounter.innerText = `Skor: ${score}`;
+            progressBar.style.width = `${((currentQuestion + 1) / questions.length) * 100}%`;
+            questionText.innerText = q.question;
+
+            optionsContainer.innerHTML = '';
+            q.options.forEach((option, index) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-4 rounded-xl bg-slate-800/80 border border-slate-700 hover:border-indigo-500 hover:bg-slate-800 transition-all text-slate-200 font-medium text-sm md:text-base";
+                btn.innerText = option;
+                btn.onclick = () => selectOption(index, btn);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function selectOption(selectedIndex, selectedBtn) {
+            if (answered) return;
+            answered = true;
+
+            const q = questions[currentQuestion];
+            const buttons = optionsContainer.children;
+
+            if (selectedIndex === q.correct) {
+                selectedBtn.classList.remove('bg-slate-800/80', 'border-slate-700');
+                selectedBtn.classList.add('bg-emerald-600/20', 'border-emerald-500', 'text-emerald-300');
+                score += 1;
+                scoreCounter.innerText = `Skor: ${score}`;
+            } else {
+                selectedBtn.classList.remove('bg-slate-800/80', 'border-slate-700');
+                selectedBtn.classList.add('bg-rose-600/20', 'border-rose-500', 'text-rose-300');
+                
+                // Highlight correct answer
+                buttons[q.correct].classList.remove('bg-slate-800/80', 'border-slate-700');
+                buttons[q.correct].classList.add('bg-emerald-600/20', 'border-emerald-500', 'text-emerald-300');
+            }
+
+            // Disable all options
+            for (let btn of buttons) {
+                btn.disabled = true;
+                btn.classList.add('cursor-not-allowed', 'opacity-80');
+            }
+
+            // Show explanation
+            explanationText.innerText = q.explanation;
+            explanationContainer.classList.remove('hidden');
+            nextBtn.classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            if (currentQuestion < questions.length) {
+                loadQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            quizScreen.classList.add('hidden');
+            resultScreen.classList.remove('hidden');
+            document.getElementById('final-score').innerText = `${score} / ${questions.length}`;
+
+            const percentage = (score / questions.length) * 100;
+            let message = "";
+            if (percentage >= 85) {
+                message = "Luar biasa! Pemahaman Anda tentang Ekosistem Pemrograman Mobile sangat matang.";
+            } else if (percentage >= 60) {
+                message = "Bagus! Anda sudah memahami sebagian besar konsep pemrograman mobile dengan baik.";
+            } else {
+                message = "Terus tingkatkan belajar Anda! Coba tinjau kembali materi kisi-kisi pemrograman mobile.";
+            }
+            document.getElementById('final-message').innerText = message;
+        }
+
+        function resetQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            resultScreen.classList.add('hidden');
+            startScreen.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
+```eof
+
+### Ringkasan Kuis:
+* **Total Soal**: 30 Soal Pilihan Ganda berkualitas tinggi.
+* **Cakupan Kisi-kisi**: Meliputi seluruh 25 poin kisi-kisi (Ekosistem, sejarah/perkembangan, Android vs iOS, bahasa pemrograman, Android Studio, IDE, SDK, Framework, UI/UX, Lifecycle, Layout, Navigasi, Database SQLite/Room, API, Web Service, Testing, Debugging, Build AAB, hingga Publikasi Play Store).
+* **Fitur Interaktif**: Terdapat sistem penilaian langsung (*real-time score*), indikator progres, pembahasan/penjelasan di setiap akhir jawaban, serta pesan evaluasi hasil akhir.
+
+Simpan kode di atas dengan nama file berformat `.html` (misalnya `kuis_ppb.html`) lalu buka di browser apa saja untuk mulai mengerjakan kuisnya. Semangat belajar dan semoga sukses ujiannya!
